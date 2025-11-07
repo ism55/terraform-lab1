@@ -1,3 +1,5 @@
+## main.tf
+
 terraform {
   required_providers {
     docker = {
@@ -16,11 +18,15 @@ resource "docker_image" "nginx" {
 
 # Crear un contenedor a partir de la imagen
 resource "docker_container" "web" {
-  name  = "web_server"
-  # 💡 CORRECCIÓN: Usar .name en lugar de .latest
+  # 💡 Usamos la variable para el nombre
+  name  = var.container_name 
+  
+  # ✅ Corrección: usar .name
   image = docker_image.nginx.name 
+  
   ports {
     internal = 80
-    external = 8080
+    # 💡 Usamos la variable para el puerto externo
+    external = var.external_port
   }
 }
